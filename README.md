@@ -2,10 +2,10 @@
 
 - [freedom-cli简介](#freedom-cli简介)
 - [特点](#特点)
-- [使用说明](使用说明)
+- [使用说明](#使用说明)
 - [freedom cli配套模板](#freedom-cli配套模板)
 - [freedom cli配套中间件](#freedom-cli配套中间件)
-- [上线日志](上线日志)
+- [上线日志](#上线日志)
 
 ## freedom-cli简介
 
@@ -15,7 +15,7 @@ freedom-cli是前端开发人员用于构建以及工程化的一个脚手架工
 
 ![工具预览](//cdn.51talk.com/apollo/images/db894e071ce69815d4ca2976930de498.jpg)
 
-## 特质
+## 特点
 - 扩展性强，配置灵活
 - 将常用的功能组件，比如：webpack构建、mock、publish等封装成一个个独立的middleware，易于维护与复用。
 - 提供统一的几个命令，即可完成从开发、调试、检查、发布等的流程，且可通过配置来自由控制。
