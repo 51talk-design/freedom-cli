@@ -33,7 +33,7 @@ freedom-cli是前端开发人员用于构建以及工程化的一个脚手架工
 
 `cnpm install -g @51npm/freedom-cli`
 
-###远程仓储配置
+### 远程仓储配置
 
 freedom-cli 相关配置存储于远程仓储github/gitlab、npm，工具依赖于以下配置信息
 
@@ -45,7 +45,7 @@ freedom-cli 相关配置存储于远程仓储github/gitlab、npm，工具依赖�
 | registry   | npm/cnpm镜像地址，默认值为:https://registry.npm.taobao.org   |
 | command    | 工具依赖的包管理工具，默认为cnpm                             |
 
-**若需要更改这几项配置的，可执行以下命令进行修改:**
+** 若需要更改这几项配置的，可执行以下命令进行修改: **
 
 ```
 fm config set registry=https://registry.npmjs.org
@@ -90,7 +90,7 @@ fm config set command=npm
 | freedom-middleware-webpack2  | webpack2用于前端开发环境的搭建，前端项目的构建 |
 | freedom-middleware-tstypedi  | 提供ts开发的前端项目，依赖注入的文件扫描能力   |
 
-**注意：**工具配套的中间件名称，工具会对某些中间件的功能有特殊处理，所以想要替换中间件的时候，npm包名称不要跟配套中间件名称冲突，配套中间件在npm仓储中包的命名格式为 : **@51npm/freedom-middleware-xx**
+** 注意：**工具配套的中间件名称，工具会对某些中间件的功能有特殊处理，所以想要替换中间件的时候，npm包名称不要跟配套中间件名称冲突，配套中间件在npm仓储中包的命名格式为 : **@51npm/freedom-middleware-xx**
 
 ## 发布日志
 
