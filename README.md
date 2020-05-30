@@ -17,7 +17,7 @@ freedom-cli是前端开发人员用于构建以及工程化的一个脚手架工
 
 它通过流程配置的方式，把前端开发的整个流程分解为一个一个单一功能组件，然后通过配置赋予开发人员自己想要的构建流程，简化并统一了开发人员日常构建与开发相关的工作，同时每个常用功能组件(middleware)可单独维护，单独使用。
 
-![](//cdn.51talk.com/apollo/images/70edc9eaa47eea87ab8e042ef397cc50.jpg)
+![](https://cdn.51talk.com/apollo/images/70edc9eaa47eea87ab8e042ef397cc50.jpg)
 
 ### 特点
 
