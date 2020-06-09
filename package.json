@@ -1,7 +1,7 @@
 {
   "name": "@51npm/freedom-cli",
   "version": "1.0.0",
-  "description": "freedom-cli前端综合解决方案脚手架",
+  "description": "51talk freedom design team 前端综合解决方案脚手架",
   "bin": {
     "fm": "./bin/fm.js"
   },
@@ -20,15 +20,16 @@
     "type": "git",
     "url": "https://github.com/51talk-design/freedom-cli"
   },
+  "author": "shangshanruoshui",
   "maintainers": [
     {
-      "name": "ljcheibao",
+      "name": "shangshanruoshui",
       "email": "gxgongxueyuan123@163.com"
     }
   ],
   "contributors": [
     {
-      "name": "ljcheibao",
+      "name": "shangshanruoshui",
       "email": "gxgongxueyuan123@163.com"
     }
   ],

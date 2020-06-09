@@ -1,23 +1,24 @@
 # 文档
 
 - [freedom-cli简介](#freedom-cli简介)
-  * [特点](#特点)
-- [特点](#特点)
+  * [特点](##特点)
 - [使用说明](#使用说明)
-  * [安装](#安装)
-  * [远程仓储配置](#远程仓储配置)
-  * [常用命令](#常用命令)
+  * [安装](##安装)
+  * [远程仓储配置](##远程仓储配置)
+  * [常用命令](##常用命令)
+- [freedom.yml配置说明](#freedom.yml配置说明)
 - [freedom cli配套模板](#freedom-cli配套模板)
 - [freedom cli配套中间件](#freedom-cli配套中间件)
+  * [中间件开发说明](##中间件开发说明)
 - [发布日志](#发布日志)
 
 ## freedom-cli简介
 
 freedom-cli是前端开发人员用于构建以及工程化的一个脚手架工具。
 
-它通过流程配置的方式，把前端开发的整个流程分解为一个一个单一功能组件，然后通过配置赋予开发人员自己想要的构建流程，简化并统一了开发人员日常构建与开发相关的工作，同时每个常用功能组件(middleware)可单独维护，单独使用。
+它通过流程配置的方式(**每个项目存在的.freedom/freedom.yml文件**)，把前端开发的整个流程分解为一个一个单一功能组件，然后通过配置赋予开发人员自己想要的构建流程，简化并统一了开发人员日常构建与开发相关的工作，同时每个常用功能组件(**middleware**)可单独维护，单独使用。
 
-![](https://cdn.51talk.com/apollo/images/70edc9eaa47eea87ab8e042ef397cc50.jpg)
+![工具预览](//cdn.51talk.com/apollo/images/db894e071ce69815d4ca2976930de498.jpg)
 
 ### 特点
 
@@ -33,7 +34,7 @@ freedom-cli是前端开发人员用于构建以及工程化的一个脚手架工
 
 `cnpm install -g @51npm/freedom-cli`
 
-### 远程仓储配置
+###远程仓储配置
 
 freedom-cli 相关配置存储于远程仓储github/gitlab、npm，工具依赖于以下配置信息
 
@@ -68,6 +69,93 @@ fm config set command=npm
 - fm middleware          show工具支持的中间件列表信息
 - fm show tpl                show工具支持的工程模板列表信息
 
+## freedom.yml配置说明
+
+**freedom.yml**为管控工具流程配置文件，配置的是开发的几个阶段(**比如：dev、build、serve、publish**)，对应使用的运行中间件。
+
+开发者可按照中间件、**freedom.yml**配置中间件的约束，替换自己的开发的中间件。
+
+- **freedom.yml**对于中间件配置的参数约定
+
+  | 参数名称 | 参数说明                                                     |
+  | -------- | ------------------------------------------------------------ |
+  | name     | 中间件的名称，可为空                                         |
+  | script   | 中间件要执行的脚本，比如：cnpm install                       |
+  | version  | 中间件的版本                                                 |
+  | before   | 中间件是否再执行之前才进行安装(**工具在执行命令的时候就会进行安装中间件**)，默认为false，可空 |
+  | args     | 传递给中间件的参数，object类型，即：中间件设定的参数形式必须为object |
+
+- **freedom.yml**标准的流程配置如下：
+
+```yaml
+dev:
+  - name:
+    script:
+      - cnpm install
+  - name: '@51npm/freedom-middleware-mock2easy'
+    version: 
+    before: 
+    args:
+      port: 8080
+  - name: '@51npm/freedom-middleware-webpack4'
+    version: 
+    before: 
+    args:
+      port: 3333
+      env: dev
+      publicPath: //localhost:3333
+      build:  
+      proxy:
+        context:
+          - /wap
+          - /api
+        options:
+          target: http://localhost:8080
+build:
+  - name: 
+    script: 
+      - cnpm install
+  - name: '@51npm/freedom-middleware-webpack4'
+    version: 
+    before: 
+    args:
+      projectID: ${projectID}
+      env: prod
+      publicPath: //freedom.demo.com/apollo/${projectName}/
+      build: build/apollo/${projectName}/
+      bundleAnalyzerReportPort: 
+      specialVersion: 
+serve:
+  - name: 
+    script:
+      - fm build
+  - name: '@51npm/freedom-middleware-mock2easy'
+    version: 
+    before: 
+    args:
+      port: 8080
+  - name: '@51npm/freedom-middleware-serve'
+    version: 1.0.10
+    before: 
+    args:
+      port: 8888
+      build: build
+      proxy:
+        context:
+          - /api
+        options:
+          target: http://localhost:8080
+publish:
+  - name: '@51npm/freedom-middleware-publish'
+    version: 
+    before: 
+    args:
+      projectID: ${projectID}
+      path: build
+```
+
+
+
 ## freedom cli配套模板
 
 | 模板名称                     | 模板描述                                           |
@@ -75,7 +163,7 @@ fm config set command=npm
 | freedom-template-tsKoa       | 基于TypeScript+Koa开发的node服务端项目工程模板     |
 | freedom-template-tsExpress   | 基于TypeScript+Express开发的node服务端项目工程模板 |
 | freedom-template-react       | 基于React框架的移动端多页面工程模板                |
-| freedom-template-vue         | 基于Vue框架的移动端多页面工程模板                  |
+| freedom-template-mobileVue   | 基于Vue框架的移动端多页面工程模板                  |
 | freedom-template-zeptoMobile | zepto移动端多页面工程模板                          |
 
 ## freedom cli配套中间件
@@ -89,12 +177,33 @@ fm config set command=npm
 | freedom-middleware-eslint    | 源码规范校验中间件                             |
 | freedom-middleware-webpack2  | webpack2用于前端开发环境的搭建，前端项目的构建 |
 | freedom-middleware-tstypedi  | 提供ts开发的前端项目，依赖注入的文件扫描能力   |
+| freedom-middleware-ossupload | oss文件上传                                    |
 
-**注意:** 工具配套的中间件名称，工具会对某些中间件的功能有特殊处理，所以想要替换中间件的时候，npm包名称不要跟配套中间件名称冲突，配套中间件在npm仓储中包的命名格式为 : **@51npm/freedom-middleware-xx**
+**注意：**工具配套的中间件名称，工具会对某些中间件的功能有特殊处理，所以想要替换中间件的时候，npm包名称不要跟配套中间件名称冲突，配套中间件在npm仓储中包的命名格式为 : **@51npm/freedom-middleware-xx**
+
+### 中间件开发说明
+
+中间件为通过module.exports 导出的一个异步函数，返回一个boolean值，约束如下：
+
+```js
+module.exports = async function(params) {
+  // todo some thing
+  return true;
+};
+```
+
+**备注:** 传递给中间件的参数(**params**)，必须以**object**形式存在
+
+```js
+{
+  env:"prod",
+  build:"/build"  
+}
+```
 
 ## 发布日志
 
 | 发布时间 | 发布版本 | 功能描述 |
 | -------- | -------- | -------- |
-|          |          |          |
+|          | 1.0.0    | 工具上线 |
 
