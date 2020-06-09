@@ -6,7 +6,7 @@
   * [安装](#安装)
   * [远程仓储配置](#远程仓储配置)
   * [常用命令](#常用命令)
-- [freedom.yml配置说明](#freedom.yml配置说明)
+- [freedom.yml配置说明](#freedom-yml配置说明)
 - [freedom cli配套模板](#freedom-cli配套模板)
 - [freedom cli配套中间件](#freedom-cli配套中间件)
   * [中间件开发说明](#中间件开发说明)
@@ -179,7 +179,7 @@ publish:
 | freedom-middleware-tstypedi  | 提供ts开发的前端项目，依赖注入的文件扫描能力   |
 | freedom-middleware-ossupload | oss文件上传                                    |
 
-**注意：**工具配套的中间件名称，工具会对某些中间件的功能有特殊处理，所以想要替换中间件的时候，npm包名称不要跟配套中间件名称冲突，配套中间件在npm仓储中包的命名格式为 : **@51npm/freedom-middleware-xx**
+**注意:**工具配套的中间件名称，工具会对某些中间件的功能有特殊处理，所以想要替换中间件的时候，npm包名称不要跟配套中间件名称冲突，配套中间件在npm仓储中包的命名格式为 : **@51npm/freedom-middleware-xx**
 
 ### 中间件开发说明
 
