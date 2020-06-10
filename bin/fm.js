@@ -2,10 +2,13 @@
 const commander = require("commander");
 const chalk = require("chalk");
 const figlet = require("figlet");
+const loadRemoteConf = require("../source/loadRemoteConf");
 const templateMiddleware = require("../source/template");
 const GlobalConfigInit = require("../source/globalConfigInit");
 const Core = require("../source/core");
 const Clean = require("../source/clean");
+const FreedomFlow = require("../source/freedomFlow");
+const Login = require("../source/login");
 
 commander.version(require("../package.json").version, '-v, --version');
 // commander.option("-g, --global", "freedom cli global setting");
@@ -30,6 +33,7 @@ commander.command("init")
   .option("-p, --pname [project-name]", "initialize the project name")
   .action(async function (cmd) {
     try {
+      await loadRemoteConf.downloadConfigs();
       let core = new Core({
         flow: true,
         cmd: cmd,
@@ -49,20 +53,49 @@ commander.command("init")
 commander.command("dev")
   .description('deploy project for local development')
   .action(async function (cmd) {
-
+    try {
+      await loadRemoteConf.downloadConfigs();
+      let freedomFlow = new FreedomFlow({
+        flow: true,
+        cmd: cmd,
+      });
+      let freedomFlowMiddlewares = await freedomFlow.execute();
+      let core = new Core({
+        flow: true,
+        cmd: cmd,
+        middlewares: freedomFlowMiddlewares
+      });
+      core.execute();
+    } catch (error) {
+      console.log(error);
+      process.exit(1);
+    }
   });
 commander.command("test")
   .description('test project unittest')
   .action(async function (cmd) {
-
+    console.log(chalk.green("待开发中......"));
   });
 commander.command("build")
   .description('compile local project resource')
   .option("-a, --analyzer", "build project with bundle analyzer report ")
-  .option("-t, --test", "build project for test environment")
-  .option("-p, --preview", "build project for pre environment")
   .action(async function (cmd) {
-
+    try {
+      await loadRemoteConf.downloadConfigs();
+      let freedomFlow = new FreedomFlow({
+        flow: true,
+        cmd: cmd,
+      });
+      let freedomFlowMiddlewares = await freedomFlow.execute();
+      let core = new Core({
+        flow: true,
+        cmd: cmd,
+        middlewares: freedomFlowMiddlewares,
+      });
+      core.execute();
+    } catch (error) {
+      process.exit(1);
+    }
   });
 
 
@@ -70,13 +103,35 @@ commander.command("publish")
   .description('Publish fe resource')
   .option("-p, --prod", "build project with bundle analyzer report ")
   .action(async function (cmd) {
-
+    try {
+      await loadRemoteConf.downloadConfigs();
+      let freedomFlow = new FreedomFlow({
+        flow: true,
+        cmd: cmd,
+      });
+      let freedomFlowMiddlewares = await freedomFlow.execute();
+      let core = new Core({
+        flow: true,
+        cmd: cmd,
+        middlewares: freedomFlowMiddlewares
+      });
+      core.execute();
+    } catch (error) {
+      console.log(error);
+      process.exit(1);
+    }
   });
 
 commander.command("login")
   .description("sign in your gitlab account")
   .action(async function (cmd) {
-
+    try {
+      await loadRemoteConf.downloadConfigs();
+      await new Login().login();
+    } catch (error) {
+      console.log(error);
+      process.exit(1);
+    }
   });
 commander.command("clean")
   .description("execute freedom cli clean command")
@@ -97,6 +152,7 @@ commander.command("middleware")
   .option("-r, --remove [middleware]", "clean specify freedom cli middleware")
   .action(async function (cmd, value) {
     try {
+      await loadRemoteConf.downloadConfigs();
       if (cmd.hasOwnProperty("remove") && cmd.remove
         && typeof cmd.remove === "string") {
         cmd.clean = cmd.remove;
@@ -117,7 +173,23 @@ commander.command("middleware")
 commander.command("serve")
   .description('preview local have compiled project')
   .action(async function (cmd) {
-
+    try {
+      await loadRemoteConf.downloadConfigs();
+      let freedomFlow = new FreedomFlow({
+        flow: true,
+        cmd: cmd,
+      });
+      let freedomFlowMiddlewares = await freedomFlow.execute();
+      let core = new Core({
+        flow: true,
+        cmd: cmd,
+        middlewares: freedomFlowMiddlewares
+      });
+      core.execute();
+    } catch (error) {
+      console.log(error);
+      process.exit(1);
+    }
   });
 commander.on("--help", function () {
   console.log();

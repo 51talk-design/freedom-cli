@@ -32,17 +32,21 @@ class BasicFreedom extends BasicConf {
     // 统一为一种更新方式，如缺少配置，一次性更新
     if (!fs.existsSync(this.templateYmlPath)) {
       console.log((`check you do not download freedom project template...`).bold.cyan);
-      console.log((`please usage commond 【fm update -l】to update!`).bold.cyan);
+      console.log((`please usage commond 【fm update】to update!`).bold.cyan);
       process.exit(1);
     }
     if (!fs.existsSync(this.middlewareYmlPath)) {
       console.log((`check you do not download freedom middlewares...`).bold.cyan);
-      console.log((`please usage commond 【fm update -l】to update!`).bold.cyan);
+      console.log((`please usage commond 【fm update】to update!`).bold.cyan);
       process.exit(1);
     }
     if (!fs.existsSync(this.freedomYmlPath)) {
       console.log((`check you do not have develop flow configure...`).bold.cyan);
-      console.log((`please usage commond 【fm update -l】to update!`).bold.cyan);
+      console.log((`please usage commond 【fm update】to update!`).bold.cyan);
+      process.exit(1);
+    }
+    if (!fs.existsSync(this.corePkgYmlPath)) {
+      console.log((`freedom-corepkg.yml can not exist\r\nplease execute 【fm update】to update remote config`).bold.cyan);
       process.exit(1);
     }
   }

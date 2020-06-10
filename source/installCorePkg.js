@@ -9,12 +9,13 @@ let corePkgYmlContent = null;
 class InstallCorePkg extends BasicConfig {
   constructor() {
     super();
-    if (!fs.existsSync(this.corePkgYmlPath)) {
-      console.log((`freedom-corepkg.yml can not exist\r\nplease execute 【fm update】to update remote config`).bold.cyan);
-      process.exit(1);
-    }
+    // if (!fs.existsSync(this.corePkgYmlPath)) {
+    //   console.log((`freedom-corepkg.yml can not exist\r\nplease execute 【fm update】to update remote config`).bold.cyan);
+    //   process.exit(1);
+    // }
     try {
-      if (!corePkgYmlContent) corePkgYmlContent = yaml.safeLoad(fs.readFileSync(this.corePkgYmlPath, 'utf8'));
+      if (!corePkgYmlContent && fs.existsSync(this.corePkgYmlPath))
+        corePkgYmlContent = yaml.safeLoad(fs.readFileSync(this.corePkgYmlPath, 'utf8'));
       this.corePkgYmlContent = corePkgYmlContent;
     } catch (error) {
       console.log(error);
@@ -22,8 +23,12 @@ class InstallCorePkg extends BasicConfig {
     }
   }
   async installCorePkg() {
+    if (cache.hasCorePkgCache) return;
     // 默认先安装执行指定的配置包
     // 配置到远程gitlab仓库获取
+    if (!corePkgYmlContent && fs.existsSync(this.corePkgYmlPath))
+      corePkgYmlContent = yaml.safeLoad(fs.readFileSync(this.corePkgYmlPath, 'utf8'));
+    this.corePkgYmlContent = corePkgYmlContent;
     let needInstallPkgs = this.corePkgYmlContent;
     // 先执行项目特殊依赖
     console.log((`installing core package dependency`).bold.cyan);

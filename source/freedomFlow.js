@@ -172,17 +172,18 @@ class FreedomFlow extends BasicFreedom {
     try {
       let version = params.specialVersion || "";
       // 生产新的版本号
+      // 获取项目package.json上面的version自动生成新的版本
+      let pkg = JSON.parse(fs.readFileSync(this.targetPackageJsonDirPath, "utf8"));
+      let projectName = pkg.name || "";
       if (!version) {
-        // 获取项目package.json上面的version自动生成新的版本
-        let pkg = JSON.parse(fs.readFileSync(this.targetPackageJsonDirPath, "utf8"));
         version = this._createNewVersion(pkg.version);
         pkg.version = version;
         // 重新更新package.json
         fs.writeFileSync(this.targetPackageJsonDirPath, JSON.stringify(pkg, null, 2));
       }
       console.log((`当前build版本： 【${version}】`).bold.green);
-      params.publicPath = params.publicPath + version;
-      params.build = params.build + version;
+      params.publicPath = path.normalize(`${params.publicPath}/${version}`).replace(/${projectName}/gi, projectName);
+      params.build = path.normalize(`${params.build}/${version}`).replace(/${projectName}/gi, projectName);
     } catch (e) {
       console.log(e);
       process.exit(1);

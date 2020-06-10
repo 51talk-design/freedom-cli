@@ -1,12 +1,10 @@
 const BasicFreedom = require("./basicFreedom");
-const RemoteConf = require("./remoteConfig");
 const Middleware = require("./middleware");
 const shell = require("freedom-util-shell")();
 const CmdConf = require("./cmdConf");
 const Module = require("./module");
 const switchRegistryInstance = require("./switchRegistry");
 
-const remoteConf = new RemoteConf();
 const middleware = new Middleware();
 const moduleInstance = new Module();
 
@@ -41,15 +39,6 @@ class Core extends BasicFreedom {
   }
 
   /**
-   * 加载配置
-   * @return {void} 无返回值
-   */
-  async _downloadConfigs() {
-    if (!this.cache.config) await remoteConf.loadRemoteConf();
-    return;
-  }
-
-  /**
    * 工具执行入口
    * @return {void} 无返回值
    */
@@ -57,8 +46,6 @@ class Core extends BasicFreedom {
     try {
       // todo:增加工具自动升级功能
       await switchRegistryInstance.switchRegistry();
-      // 加载配置
-      await this._downloadConfigs();
       // 加载中间件
       await this._downloadMiddlewares();
       if (this.flow) {
@@ -75,7 +62,7 @@ class Core extends BasicFreedom {
           }
           if (middleware.name)
             console.log((`execute middleware 【${middleware.name}】`).bold.cyan);
-          await middleware.fn(params);
+          let result = await middleware.fn(params);
           if (middleware.script) { // 执行shell
             console.log((`execute script 【${middleware.script}】`).bold.cyan);
             await shell.execCmd(middleware.script, true);
