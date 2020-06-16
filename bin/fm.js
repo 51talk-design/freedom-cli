@@ -9,11 +9,12 @@ const Core = require("../source/core");
 const Clean = require("../source/clean");
 const FreedomFlow = require("../source/freedomFlow");
 const Login = require("../source/login");
+const updateConf = require("../source/update");
 
 commander.version(require("../package.json").version, '-v, --version');
 // commander.option("-g, --global", "freedom cli global setting");
 // commander.option("-c, --config", "freedom cli config setting");
-commander.usage(chalk.green('<init、dev、test、build、publish、login、clean、serve、middleware、mock> [project-name]').bold);
+commander.usage(chalk.green('<init、dev、test、build、publish、login、clean、update、serve、middleware、mock> [project-name]').bold);
 
 commander.command("config <handle> [value]")
   .description("setting freedom cli dependency config,like registry、github and so on")
@@ -21,10 +22,29 @@ commander.command("config <handle> [value]")
     GlobalConfigInit.handle(handle, value);
   });
 
-commander.command("show tpl")
+commander.command("show")
   .description("show freedom cli support templates")
   .action(async function (cmd) {
+    await loadRemoteConf.downloadConfigs();
     await templateMiddleware();
+  });
+
+commander.command("update")
+  .description(`update remote config,like template、middleware and others`)
+  .option("-mw, --middlewareYmlConf", "update remote middleware.yml config")
+  .option("-fm, --freedomYmlConf", "update remote freedom.yml config")
+  .option("-t, --templateYmlConf", "update remote template.yml config")
+  .option("-p, --packageYmlConf", "update remote freedom-corepkg.yml config")
+  .action(async function (cmd) {
+    try {
+      let optValue = cmd.middlewareYmlConf ? "middlewareYmlConf" : (cmd.freedomYmlConf ? "freedomYmlConf" : "");
+      optValue = optValue || (cmd.templateYmlConf ? "templateYmlConf" : "");
+      optValue = optValue || (cmd.packageYmlConf ? "packageYmlConf" : "");
+      updateConf.update(optValue);
+    } catch (error) {
+      console.log(error);
+      process.exit(1);
+    }
   });
 
 commander.command("init")
@@ -74,7 +94,7 @@ commander.command("dev")
 commander.command("test")
   .description('test project unittest')
   .action(async function (cmd) {
-    console.log(chalk.green("待开发中......"));
+    console.log(chalk.green("this command cannot use,please wait to develop"));
   });
 commander.command("build")
   .description('compile local project resource')
@@ -126,7 +146,6 @@ commander.command("login")
   .description("sign in your gitlab account")
   .action(async function (cmd) {
     try {
-      await loadRemoteConf.downloadConfigs();
       await new Login().login();
     } catch (error) {
       console.log(error);
@@ -142,7 +161,7 @@ commander.command("clean")
 commander.command("mock")
   .description(`start mock service`)
   .action(async function (cmd) {
-
+    console.log(chalk.green("this command cannot use,please wait to develop"));
   });
 
 commander.command("middleware")

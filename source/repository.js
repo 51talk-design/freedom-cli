@@ -1,6 +1,8 @@
 const BasicConf = require("./basicConf");
 const download = require('download');
 const fs = require("fs");
+const fsExtra = require('fs-extra');
+const shell = require("freedom-util-shell")();
 
 /**
  * 远程仓库相关操作，比如github、gitlab、cnpm、npm等
@@ -32,6 +34,33 @@ class Repository extends BasicConf {
     }
 
     return url;
+  }
+
+  updateCofigFile(pname, file) {
+    let _this = this;
+    let url = this._getFetchTplUrl(pname);
+    let headers = {
+      accept: 'application/zip'
+    };
+    let tempDir = `${_this.localConfDir}/tmp`;
+    // 若是gitlab的仓储，则需要将个人账号的私有token带上
+    if (this.command.repository == "gitlab") headers["PRIVATE-TOKEN"] = "";
+    return new Promise(function (resolve, reject) {
+      download(url, `${tempDir}/config`, {
+        extract: true,
+        strip: 1,
+        mode: '666',
+        headers: headers
+      }).then(async (data) => {
+        // 拷贝文件 
+        await fsExtra.copy(`${tempDir}/${file}`, `${_this.localConfDir}/${file}`);
+        await shell.execCmd(`rm -rf ${tempDir}`, true);
+        resolve(true);
+      }).catch(err => {
+        console.log(err)
+        reject(false);
+      })
+    });
   }
 
   /**

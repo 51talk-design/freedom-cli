@@ -30,6 +30,7 @@ class InstallCorePkg extends BasicConfig {
       corePkgYmlContent = yaml.safeLoad(fs.readFileSync(this.corePkgYmlPath, 'utf8'));
     this.corePkgYmlContent = corePkgYmlContent;
     let needInstallPkgs = this.corePkgYmlContent;
+    // todo 这里判断安装的依赖是否为字面量对象，if (!needInstallPkgs || )
     // 先执行项目特殊依赖
     console.log((`installing core package dependency`).bold.cyan);
     console.log((`please waiting ......`).bold.cyan);

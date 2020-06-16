@@ -19,7 +19,7 @@ freedom-cli是前端开发人员用于构建以及工程化的一个脚手架工
 
 它通过流程配置的方式(**每个项目存在的.freedom/freedom.yml文件**)，把前端开发的整个流程分解为一个一个单一功能组件，然后通过配置赋予开发人员自己想要的构建流程，简化并统一了开发人员日常构建与开发相关的工作，同时每个常用功能组件(**middleware**)可单独维护，单独使用。
 
-![工具预览](//cdn.51talk.com/apollo/images/db894e071ce69815d4ca2976930de498.jpg)
+![工具预览](https://cdn.51talk.com/apollo/images/48d76a06b5d1b83eb6355c971951f4b5.jpg)
 
 ### 特点
 
@@ -68,7 +68,8 @@ fm config set command=npm
 - fm publish                  项目资源发布
 - fm clean                      清除freedom cli本地所有的cache记录，若远程配置有变更时，可执行**fm clean**来清除本地cache重新更新
 - fm middleware          show工具支持的中间件列表信息
-- fm show tpl                show工具支持的工程模板列表信息
+- fm show                      show工具支持的工程模板列表信息
+- fm update                   更新远程配置 
 
 ## freedom.yml配置说明
 
@@ -155,7 +156,14 @@ publish:
       path: build
 ```
 
+## 工具远程配置说明
 
+freedom cli远程配置，是为了让工具具备更好的扩展性，[详情请点击](https://github.com/51talk-design/freedom-cli-config)
+
+- freedom.yml — freedom cli 默认流程配置文件(**项目中可自行修改**)
+- freedom-corepkg.yml — 工程核心npm包配置文件
+- middleware.yml — freedom cli 支持的中间件列表配置
+- template.yml — freedom cli 支持的模板配置文件
 
 ## freedom cli配套模板
 
@@ -166,6 +174,10 @@ publish:
 | freedom-template-react       | 基于React框架的移动端多页面工程模板                |
 | freedom-template-mobileVue   | 基于Vue框架的移动端多页面工程模板                  |
 | freedom-template-zeptoMobile | zepto移动端多页面工程模板                          |
+
+**备注:**开发者可自行定制工程模板，让团队使用，定制好模板后，需要在远程配置**template.yml**该模板信息([工具远程配置说明](#工具远程配置说明))
+
+本地执行命令**fm clean**，清除cache后，可正常选择定制的工程模板
 
 ## freedom cli配套中间件
 
@@ -202,9 +214,11 @@ module.exports = async function(params) {
 }
 ```
 
+开发一个中间件，在远程配置文件**middleware.yml**增加上([工具远程配置说明](#工具远程配置说明))，本地执行命令**fm clean**，清除cache，后执行命令**fm mw**进行查看工具支持的中间件
+
 ## 发布日志
 
-| 发布时间 | 发布版本 | 功能描述 |
-| -------- | -------- | -------- |
-|          | 1.0.0    | 工具上线 |
+| 发布时间   | 发布版本 | 功能描述 |
+| ---------- | -------- | -------- |
+| 2020-06-16 | 1.0.0    | 工具上线 |
 
