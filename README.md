@@ -1,3 +1,8 @@
+
+[![npm](https://img.shields.io/npm/l/@51npm/freedom-cli.svg)](LICENSE)
+[![NPM Version](https://img.shields.io/npm/v/@51npm/freedom-cli.svg)](https://www.npmjs.com/package/@51npm/freedom-cli)
+[![npm](https://img.shields.io/npm/dt/@51npm/freedom-cli.svg)](https://www.npmjs.com/package/@51npm/freedom-cli)
+
 # 文档
 
 - [freedom-cli简介](#freedom-cli简介)
